@@ -11,13 +11,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Json;
 using System.Text;
-using static CoeverRestConsoleP.Logger;
-using static CoeverRestConsoleP.Entity;
 using System.Data.SqlClient;
 using System.Data;
 using MySql.Data.MySqlClient;
 
-namespace CoeverRestConsoleP.API
+namespace SocketServerLauncher
 {
     class datain
     {
@@ -55,9 +53,9 @@ namespace CoeverRestConsoleP.API
 
                 try
                 {
-                    Sensor sen = new Sensor();
+                    //Sensor sen = new Sensor();
                     string[] data = context.Request.Payload.Split('&');
-                    sen.MAC = data[0].Substring(4);
+                    //sen.MAC = data[0].Substring(4);
 
                     string strConn = "Server=m.coever.co.kr;Database=coever_mes_hwt;Uid=dbmes;Pwd=dbmes1!;";
 
@@ -71,26 +69,26 @@ namespace CoeverRestConsoleP.API
                         {
 
                             string senddata = data[i];
-                            //SENSORCOLLECTION 수집
-                            sen.TimeStamp = ConvertFromUnixTimestamp( Convert.ToDouble( senddata.Split('|')[0].Substring(5))).ToString();
-                            sen.CH1 = Convert.ToDouble( senddata.Split('|')[1]);
-                            sen.CH2 = Convert.ToDouble( senddata.Split('|')[2]);
-                            sen.CH3 = Convert.ToDouble( senddata.Split('|')[3]);
-                            sen.CH4 = Convert.ToDouble( senddata.Split('|')[4]);
-                            sen.CH5 = Convert.ToDouble( senddata.Split('|')[5]);
-                            sen.CH6 = Convert.ToDouble( senddata.Split('|')[6]);
+                            ////SENSORCOLLECTION 수집
+                            //sen.TimeStamp = ConvertFromUnixTimestamp( Convert.ToDouble( senddata.Split('|')[0].Substring(5))).ToString();
+                            //sen.CH1 = Convert.ToDouble( senddata.Split('|')[1]);
+                            //sen.CH2 = Convert.ToDouble( senddata.Split('|')[2]);
+                            //sen.CH3 = Convert.ToDouble( senddata.Split('|')[3]);
+                            //sen.CH4 = Convert.ToDouble( senddata.Split('|')[4]);
+                            //sen.CH5 = Convert.ToDouble( senddata.Split('|')[5]);
+                            //sen.CH6 = Convert.ToDouble( senddata.Split('|')[6]);
 
-                            Sensor_I43(sen, conn);
+                            //Sensor_I43(sen, conn);
 
-                            //DATACOLLECTION 수집
-                            int cnt = senddata.Split('|').Count() - 1;
-                            for (int j = 1; j < cnt; j++)
-                            {
-                                sen.TimeStamp = senddata.Split('|')[0].Substring(5);
+                            ////DATACOLLECTION 수집
+                            //int cnt = senddata.Split('|').Count() - 1;
+                            //for (int j = 1; j < cnt; j++)
+                            //{
+                            //    sen.TimeStamp = senddata.Split('|')[0].Substring(5);
 
-                                //파라미터
-                                Sensor_I42(sen.MAC, "", "", Convert.ToDouble(senddata.Split('|')[j]), j.ToString(), conn);
-                            }
+                            //    //파라미터
+                            //    Sensor_I42(sen.MAC, "", "", Convert.ToDouble(senddata.Split('|')[j]), j.ToString(), conn);
+                            //}
 
                         }
                     }
@@ -117,35 +115,7 @@ namespace CoeverRestConsoleP.API
 
             }
 
-            private void Sensor_I43(Sensor sen, MySqlConnection conn)
-            {
-                MySqlCommand cmd = new MySqlCommand();
-
-                cmd.CommandText = "USP_SvrSensor_I43";
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Connection = conn;
-
-                cmd.Parameters.Add(new MySqlParameter("@v_mac", MySqlDbType.VarChar, 50));
-                cmd.Parameters.Add(new MySqlParameter("@v_timestamp", MySqlDbType.VarChar, 50));
-                cmd.Parameters.Add(new MySqlParameter("@v_ch1", MySqlDbType.Decimal));
-                cmd.Parameters.Add(new MySqlParameter("@v_ch2", MySqlDbType.Decimal));
-                cmd.Parameters.Add(new MySqlParameter("@v_ch3", MySqlDbType.Decimal));
-                cmd.Parameters.Add(new MySqlParameter("@v_ch4", MySqlDbType.Decimal));
-                cmd.Parameters.Add(new MySqlParameter("@v_ch5", MySqlDbType.Decimal));
-                cmd.Parameters.Add(new MySqlParameter("@v_ch6", MySqlDbType.Decimal));
-
-                cmd.Parameters["@v_mac"].Value = sen.MAC;
-                cmd.Parameters["@v_timestamp"].Value = sen.TimeStamp;
-                cmd.Parameters["@v_ch1"].Value = sen.CH1;
-                cmd.Parameters["@v_ch2"].Value = sen.CH2;
-                cmd.Parameters["@v_ch3"].Value = sen.CH3;
-                cmd.Parameters["@v_ch4"].Value = sen.CH4;
-                cmd.Parameters["@v_ch5"].Value = sen.CH5;
-                cmd.Parameters["@v_ch6"].Value = sen.CH6;
-
-
-                cmd.ExecuteNonQuery();
-            }
+           
 
             public static void Sensor_I42(string v_resource_mst, string v_property_value, string v_condition_code, double v_collection_value, string v_resource_code, MySqlConnection conn)
             {

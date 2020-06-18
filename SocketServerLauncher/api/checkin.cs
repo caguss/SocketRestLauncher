@@ -11,11 +11,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Json;
 using System.Text;
-using static CoeverRestConsoleP.Logger;
-using static CoeverRestConsoleP.Entity;
-using CoeverRestConsoleP.DataBase;
 
-namespace CoeverRestConsoleP.API
+namespace SocketServerLauncher
 {
     class checkin
     {
