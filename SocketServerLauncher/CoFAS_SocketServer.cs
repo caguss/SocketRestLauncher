@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace SocketServerLauncher
 {
     /// <summary>
@@ -19,7 +18,7 @@ namespace SocketServerLauncher
         int intMaxConnection = 100; //30 에서 변경
         public List<Socket> connectedClients = new List<Socket>();
         static private string logname = "sp";
-
+        ServerEntity _pServerEntity;
         public AsyncCallback pfnWorkerCallBack;
         public Socket m_socListener;
         public Socket m_socWorker;
@@ -274,8 +273,8 @@ namespace SocketServerLauncher
         /// <param name="asyn"></param>
         public void OnDataReceived(IAsyncResult asyn)
         {
-           
-          
+
+            #region
             CSocketPacket theSockId = (CSocketPacket)asyn.AsyncState;
 
             int ErrorCnt = 0;
@@ -318,7 +317,7 @@ namespace SocketServerLauncher
 
 
                 ErrorCnt = 0;
-
+                #endregion
                 WaitForData(theSockId.thisSocket);
             }
             catch (ObjectDisposedException)

@@ -54,6 +54,11 @@ namespace SocketServerLauncher
             {
                 MessageBox.Show("포트 번호를 입력해 주세요.", "오류");
             }
+            else if (_tbResourceCode.Text == "")
+            {
+                MessageBox.Show("리소스 코드를 입력해 주세요.", "오류");
+            }
+
             else if (txtIP.Enabled == true)
             {
                 if (checkIP())
@@ -65,7 +70,7 @@ namespace SocketServerLauncher
                     newserver.Name = txtName.Text;
                     newserver.Ip = txtIP.Text;
                     newserver.Port = txtPort.Text;
-
+                    newserver.Resource_code = _tbResourceCode.Text;
                     //xml 파일 생성
                     CreateXML(newserver);
 
@@ -79,7 +84,7 @@ namespace SocketServerLauncher
                 newserver.Name = txtName.Text;
                 newserver.Ip = txtIP.Text;
                 newserver.Port = txtPort.Text;
-
+                newserver.Resource_code = _tbResourceCode.Text;
                 //xml 파일 생성
                 CreateXML(newserver);
 
@@ -198,7 +203,7 @@ namespace SocketServerLauncher
             // 생성할 XML 파일 경로와 이름, 인코딩 방식을 설정합니다.
             XmlTextWriter textWriter = new XmlTextWriter(Application.StartupPath.ToString()+ @"\server\" +txtName.Text+ ".xml", Encoding.UTF8);
             // 들여쓰기 설정
-            textWriter.Formatting = Formatting.Indented;
+            textWriter.Formatting = System.Xml.Formatting.Indented;
 
             // 문서에 쓰기를 시작합니다.
             textWriter.WriteStartDocument();
@@ -209,6 +214,10 @@ namespace SocketServerLauncher
             // 노드와 값 설정
             textWriter.WriteStartElement("name");
             textWriter.WriteString(ser.Name);
+            textWriter.WriteEndElement();
+
+            textWriter.WriteStartElement("resource_code");
+            textWriter.WriteString(ser.Resource_code);
             textWriter.WriteEndElement();
 
             textWriter.WriteStartElement("server");

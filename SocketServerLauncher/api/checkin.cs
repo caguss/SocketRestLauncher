@@ -12,7 +12,7 @@ using System.Net;
 using System.Net.Json;
 using System.Text;
 
-namespace SocketServerLauncher
+namespace SocketServerLauncher.api
 {
     class checkin
     {

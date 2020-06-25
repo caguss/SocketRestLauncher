@@ -61,6 +61,42 @@ namespace SocketServerLauncher.Properties {
         }
         
         /// <summary>
+        ///   dbmes과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DB_ID {
+            get {
+                return ResourceManager.GetString("DB_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   121.184.218.30과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DB_IP {
+            get {
+                return ResourceManager.GetString("DB_IP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   coever_mes_atg과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DB_NM {
+            get {
+                return ResourceManager.GetString("DB_NM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   dbmes1!과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DB_PW {
+            get {
+                return ResourceManager.GetString("DB_PW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
         internal static System.Drawing.Bitmap garbage_symbol_png_8_original {

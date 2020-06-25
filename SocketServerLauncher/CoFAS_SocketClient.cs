@@ -19,7 +19,6 @@ namespace SocketServerLauncher
         public static bool uselog = false;
         public CoFAS_Log _pCoFAS_Log = new CoFAS_Log(Application.StartupPath + "\\LOG\\", logname, 30, uselog);
         IPEndPoint remoteEP;
-
         /// <summary>
         /// Client Socket 
         /// </summary>
@@ -252,7 +251,8 @@ namespace SocketServerLauncher
             {
                 int bytesSent = objClient.EndSend(ar);
                 //objClient.EndAccept
-                _pCoFAS_Log.WLog("test : " +bytesSent.ToString() /*+  " / "+ BitConverter.ToString(readBuffer)*/);
+                
+                //_pCoFAS_Log.WLog(DateTime.Now + " : " + BitConverter.ToString(readBuffer));
                 objClient.BeginReceive(readBuffer, 0, readBuffer.Length, 0, new AsyncCallback(ReceiveThread), objClient);
             }
             catch (SocketException pSocketException)
@@ -314,7 +314,7 @@ namespace SocketServerLauncher
                 //socket을 사용하여 Server에 Data 보내기  
                 sendBuffer = byteSendData;
                 objClient.BeginSend(sendBuffer, 0, sendBuffer.Length, SocketFlags.None, new AsyncCallback(SendCallback), objClient);
-
+                _pCoFAS_Log.WLog("senddata : " + DateTime.Now + " : " + BitConverter.ToString(sendBuffer));
                 return true;
             }
             catch (SocketException pSocketException)

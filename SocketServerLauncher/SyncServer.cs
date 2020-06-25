@@ -14,7 +14,7 @@ namespace SocketServerLauncher
     {
         ListBox log;
         LabelControl clicount;
-
+        ServerEntity _pServerEntity ;
         Dictionary<string, DateTime> client_log = new Dictionary<string, DateTime>(); //클라이언트 확인용 딕셔너리
         Dictionary<string, DateTime> list;
         Socket syncserver = null;
@@ -211,7 +211,6 @@ namespace SocketServerLauncher
             syncserver.Close();
 
         }
-
 
         private string ByteToString(byte[] strByte) { string str = Encoding.Default.GetString(strByte); return str; }
 

@@ -91,6 +91,10 @@ namespace SocketServerLauncher
                             case "server":
                                 ser.Server = node.InnerText;
                                 break;
+                            case "resource_code":
+                                ser.Resource_code = node.InnerText;
+                                break;
+
                             case "ip":
                                 ser.Ip = node.InnerText;
                                 break;
@@ -109,7 +113,6 @@ namespace SocketServerLauncher
                     //uc 생성
                     UserControl1 mot = new UserControl1(ser);
                     mot.Name = "mot_" + ser.Name;
-
 
                     if (tlpCount < 1)
                     {

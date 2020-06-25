@@ -44,19 +44,22 @@
             this.btnServer = new DevExpress.XtraEditors.SimpleButton();
             this.btnClient = new DevExpress.XtraEditors.SimpleButton();
             this.btnRest = new DevExpress.XtraEditors.SimpleButton();
+            this._lblResourceCode = new DevExpress.XtraEditors.LabelControl();
+            this._tbResourceCode = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtIP.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radioGroup1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radioGroup2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EP1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._tbResourceCode.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // labelControl1
             // 
             this.labelControl1.Appearance.Font = new System.Drawing.Font("Tahoma", 16F);
             this.labelControl1.Appearance.Options.UseFont = true;
-            this.labelControl1.Location = new System.Drawing.Point(37, 30);
+            this.labelControl1.Location = new System.Drawing.Point(37, 15);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(51, 27);
             this.labelControl1.TabIndex = 0;
@@ -64,7 +67,7 @@
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(170, 35);
+            this.txtName.Location = new System.Drawing.Point(170, 20);
             this.txtName.Name = "txtName";
             this.txtName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
             this.txtName.Properties.Appearance.Options.UseFont = true;
@@ -237,12 +240,36 @@
             this.btnRest.Text = "R";
             this.btnRest.Click += new System.EventHandler(this.btnServer_Click);
             // 
+            // _lblResourceCode
+            // 
+            this._lblResourceCode.Appearance.Font = new System.Drawing.Font("Tahoma", 16F);
+            this._lblResourceCode.Appearance.Options.UseFont = true;
+            this._lblResourceCode.Location = new System.Drawing.Point(47, 48);
+            this._lblResourceCode.Name = "_lblResourceCode";
+            this._lblResourceCode.Size = new System.Drawing.Size(34, 27);
+            this._lblResourceCode.TabIndex = 29;
+            this._lblResourceCode.Text = "코드";
+            // 
+            // _tbResourceCode
+            // 
+            this._tbResourceCode.Location = new System.Drawing.Point(170, 52);
+            this._tbResourceCode.Name = "_tbResourceCode";
+            this._tbResourceCode.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
+            this._tbResourceCode.Properties.Appearance.Options.UseFont = true;
+            this._tbResourceCode.Properties.Appearance.Options.UseTextOptions = true;
+            this._tbResourceCode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this._tbResourceCode.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Office2003;
+            this._tbResourceCode.Size = new System.Drawing.Size(144, 26);
+            this._tbResourceCode.TabIndex = 30;
+            // 
             // AddForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(416, 473);
+            this.Controls.Add(this._tbResourceCode);
+            this.Controls.Add(this._lblResourceCode);
             this.Controls.Add(this.btnRest);
             this.Controls.Add(this.btnClient);
             this.Controls.Add(this.btnServer);
@@ -268,6 +295,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.radioGroup1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radioGroup2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.EP1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._tbResourceCode.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -290,5 +318,7 @@
         private DevExpress.XtraEditors.SimpleButton btnServer;
         private DevExpress.XtraEditors.SimpleButton btnRest;
         private DevExpress.XtraEditors.SimpleButton btnClient;
+        private DevExpress.XtraEditors.LabelControl _lblResourceCode;
+        private DevExpress.XtraEditors.TextEdit _tbResourceCode;
     }
 }

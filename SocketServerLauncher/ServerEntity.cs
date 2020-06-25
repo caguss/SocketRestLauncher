@@ -14,7 +14,7 @@ namespace SocketServerLauncher
         private string port;
         private string sql;
         private string sync;
-        
+        private string resource_code;       
 
         public string Server
         {
@@ -94,6 +94,17 @@ namespace SocketServerLauncher
             }
         }
 
-      
+        public string Resource_code
+        {
+            get
+            {
+                return resource_code;
+            }
+
+            set
+            {
+                resource_code = value;
+            }
+        }
     }
 }
