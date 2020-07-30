@@ -79,7 +79,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -192,9 +192,10 @@
             this.lblStarttime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStarttime.Location = new System.Drawing.Point(563, 3);
             this.lblStarttime.Name = "lblStarttime";
-            this.lblStarttime.Size = new System.Drawing.Size(194, 38);
+            this.lblStarttime.Size = new System.Drawing.Size(294, 38);
             this.lblStarttime.TabIndex = 9;
             this.lblStarttime.Text = "0000-00-00 오전 00:00:00";
+            this.lblStarttime.DoubleClick += new System.EventHandler(this.lblStarttime_DoubleClick);
             // 
             // tlpList
             // 
@@ -221,6 +222,7 @@
             this.Name = "SocketServerLauncher";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SocketServerLauncher";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SocketServerLauncher_FormClosing);
             this.Load += new System.EventHandler(this.SocketServerLauncher_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);

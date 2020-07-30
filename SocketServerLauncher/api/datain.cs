@@ -14,6 +14,8 @@ using System.Text;
 using System.Data.SqlClient;
 using System.Data;
 using MySql.Data.MySqlClient;
+using static SocketServerLauncher.Entity;
+using System.Windows.Forms;
 
 namespace SocketServerLauncher.api
 {
@@ -24,9 +26,33 @@ namespace SocketServerLauncher.api
         [RestResource]
         public class TestResource
         {
+            static ListBox logbox;
+            public static CoFAS_Log _pCoFAS_Log;
+
+
+            public static ListBox Logbox
+            {
+                get
+                {
+                    return logbox;
+                }
+
+                set
+                {
+                    logbox = value;
+                }
+            }
+
             [RestRoute(HttpMethod = HttpMethod.POST, PathInfo = "/datain")]
             public IHttpContext RepeatMe2(IHttpContext context)
             {
+                logbox.Invoke(new Action(delegate ()
+                {
+                    logbox.Items.Insert(0, string.Format("URL: {0}", context.Request.RawUrl));
+                    //logbox.SelectedIndex = logbox.Items.Count - 1;
+                }));
+                _pCoFAS_Log.WLog(string.Format("URL: {0}", context.Request.RawUrl));
+
                 Console.WriteLine("URL: {0}", context.Request.RawUrl);
                 Console.WriteLine("Method: {0}", context.Request.HttpMethod);
 
@@ -34,16 +60,41 @@ namespace SocketServerLauncher.api
                 {
                     foreach (string k in context.Request.QueryString)
                     {
+                        logbox.Invoke(new Action(delegate ()
+                        {
+                            logbox.Items.Insert(0, string.Format("{0}: {1}", k, context.Request.QueryString[k]));
+
+                            //logbox.SelectedIndex = logbox.Items.Count - 1;
+                        }));
+                        _pCoFAS_Log.WLog(string.Format("{0}: {1}", k, context.Request.QueryString[k]));
+
                         Console.WriteLine("{0}: {1}", k, context.Request.QueryString[k]);
                     }
 
                     if (context.Request.HttpMethod.Equals(Grapevine.Shared.HttpMethod.POST))
                     {
+                        logbox.Invoke(new Action(delegate ()
+                        {
+                            logbox.Items.Insert(0, string.Format("메세지 : " + context.Request.Payload));
+
+                            //logbox.SelectedIndex = logbox.Items.Count - 1;
+                        }));
+                        _pCoFAS_Log.WLog(string.Format("메세지 : " + context.Request.Payload));
+
                         Console.WriteLine("메세지 : \r\n" + context.Request.Payload);
                     }
                 }
                 catch (Exception ex)
                 {
+                    logbox.Invoke(new Action(delegate ()
+                    {
+                        logbox.Items.Insert(0, string.Format("오류 : {0}", ex.Message));
+
+                        //logbox.SelectedIndex = logbox.Items.Count - 1;
+                    }));
+
+                    _pCoFAS_Log.WLog(string.Format("오류 : {0}", ex.Message));
+
                     Console.WriteLine("오류 : {0}", ex.Message);
                     context.Response.SendResponse("<xml><root><ack>error</ack></root></xml>");
                     return context;
@@ -53,44 +104,44 @@ namespace SocketServerLauncher.api
 
                 try
                 {
-                    //Sensor sen = new Sensor();
+                    Sensor sen = new Sensor();
                     string[] data = context.Request.Payload.Split('&');
-                    //sen.MAC = data[0].Substring(4);
+                    sen.MAC = data[0].Substring(4);
 
                     string strConn = "Server=m.coever.co.kr;Database=coever_mes_hwt;Uid=dbmes;Pwd=dbmes1!;";
 
                     using (MySqlConnection conn = new MySqlConnection(strConn))
                     {
                         conn.Open();
-                        
 
-                        
-                        //for (int i = 5; i < data.Count(); i++)
-                        //{
 
-                        //    //string senddata = data[i];
-                        //    ////SENSORCOLLECTION 수집
-                        //    //sen.TimeStamp = ConvertFromUnixTimestamp( Convert.ToDouble( senddata.Split('|')[0].Substring(5))).ToString();
-                        //    //sen.CH1 = Convert.ToDouble( senddata.Split('|')[1]);
-                        //    //sen.CH2 = Convert.ToDouble( senddata.Split('|')[2]);
-                        //    //sen.CH3 = Convert.ToDouble( senddata.Split('|')[3]);
-                        //    //sen.CH4 = Convert.ToDouble( senddata.Split('|')[4]);
-                        //    //sen.CH5 = Convert.ToDouble( senddata.Split('|')[5]);
-                        //    //sen.CH6 = Convert.ToDouble( senddata.Split('|')[6]);
 
-                        //    //Sensor_I43(sen, conn);
+                        for (int i = 5; i < data.Count(); i++)
+                        {
 
-                        //    //DATACOLLECTION 수집
-                        //    int cnt = senddata.Split('|').Count() - 1;
-                        //    for (int j = 1; j < cnt; j++)
-                        //    {
-                        //        sen.TimeStamp = senddata.Split('|')[0].Substring(5);
+                            string senddata = data[i];
+                            //SENSORCOLLECTION 수집
+                            sen.TimeStamp = ConvertFromUnixTimestamp(Convert.ToDouble(senddata.Split('|')[0].Substring(5))).ToString();
+                            sen.CH1 = Convert.ToDouble(senddata.Split('|')[1]);
+                            sen.CH2 = Convert.ToDouble(senddata.Split('|')[2]);
+                            sen.CH3 = Convert.ToDouble(senddata.Split('|')[3]);
+                            sen.CH4 = Convert.ToDouble(senddata.Split('|')[4]);
+                            sen.CH5 = Convert.ToDouble(senddata.Split('|')[5]);
+                            sen.CH6 = Convert.ToDouble(senddata.Split('|')[6]);
 
-                        //        //파라미터
-                        //        Sensor_I42(sen.MAC, "", "", Convert.ToDouble(senddata.Split('|')[j]), j.ToString(), conn);
-                        //    }
+                            Sensor_I43(sen, conn);
 
-                        //}
+                            //DATACOLLECTION 수집
+                            int cnt = senddata.Split('|').Count() - 1;
+                            for (int j = 1; j < cnt; j++)
+                            {
+                                sen.TimeStamp = senddata.Split('|')[0].Substring(5);
+
+                                //파라미터
+                                Sensor_I42(sen.MAC, "", "", Convert.ToDouble(senddata.Split('|')[j]), j.ToString(), conn);
+                            }
+
+                        }
                     }
 
                     context.Response.SendResponse("<xml><root><ack>ok</ack></root></xml>");
@@ -98,7 +149,11 @@ namespace SocketServerLauncher.api
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("오류 : {0}",ex.Message);
+                    logbox.Invoke(new Action(delegate ()
+                    {
+                        logbox.Items.Insert(0, string.Format("오류 : {0}", ex.Message));
+                        logbox.SelectedIndex = logbox.Items.Count - 1;
+                    }));
                     context.Response.SendResponse("<xml><root><ack>error</ack></root></xml>");
                     return context;
                 }
@@ -171,6 +226,36 @@ namespace SocketServerLauncher.api
                 cmd.ExecuteNonQuery();
 
             }
+            private void Sensor_I43(Sensor sen, MySqlConnection conn)
+            {
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandText = "USP_SvrSensor_I43";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+
+                cmd.Parameters.Add(new MySqlParameter("@v_mac", MySqlDbType.VarChar, 50));
+                cmd.Parameters.Add(new MySqlParameter("@v_timestamp", MySqlDbType.VarChar, 50));
+                cmd.Parameters.Add(new MySqlParameter("@v_ch1", MySqlDbType.Decimal));
+                cmd.Parameters.Add(new MySqlParameter("@v_ch2", MySqlDbType.Decimal));
+                cmd.Parameters.Add(new MySqlParameter("@v_ch3", MySqlDbType.Decimal));
+                cmd.Parameters.Add(new MySqlParameter("@v_ch4", MySqlDbType.Decimal));
+                cmd.Parameters.Add(new MySqlParameter("@v_ch5", MySqlDbType.Decimal));
+                cmd.Parameters.Add(new MySqlParameter("@v_ch6", MySqlDbType.Decimal));
+
+                cmd.Parameters["@v_mac"].Value = sen.MAC;
+                cmd.Parameters["@v_timestamp"].Value = sen.TimeStamp;
+                cmd.Parameters["@v_ch1"].Value = sen.CH1;
+                cmd.Parameters["@v_ch2"].Value = sen.CH2;
+                cmd.Parameters["@v_ch3"].Value = sen.CH3;
+                cmd.Parameters["@v_ch4"].Value = sen.CH4;
+                cmd.Parameters["@v_ch5"].Value = sen.CH5;
+                cmd.Parameters["@v_ch6"].Value = sen.CH6;
+
+
+                cmd.ExecuteNonQuery();
+            }
+
         }
 
     }

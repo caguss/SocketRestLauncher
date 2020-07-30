@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -15,10 +16,10 @@ namespace SocketServerLauncher
     public partial class SocketServerLauncher : Form
     {
 
-
         private int tlpCount = 0;
         private int publicMargin = 10;
         private int totalviewcnt = 0; // xml count
+        
         public SocketServerLauncher()
         {
             InitializeComponent();
@@ -63,18 +64,54 @@ namespace SocketServerLauncher
 
             try
             {
+                string Api_ip="";
+                string Api_port="";
+                #region
                 if (!Directory.Exists((Application.StartupPath.ToString() + @"\server\")))
                 {
                     Directory.CreateDirectory(Application.StartupPath.ToString() + @"\server\");
                 }
+                if (!Directory.Exists((Application.StartupPath.ToString() + @"\ApiSetting\")))
+                {
+                    Directory.CreateDirectory(Application.StartupPath.ToString() + @"\ApiSetting\");
+                }
+
                 string[] filePaths = Directory.GetFiles(Application.StartupPath.ToString() + @"\server\", "*.xml",
                                          SearchOption.TopDirectoryOnly);
                 XmlDocument xmldoc = new XmlDocument();
                 totalviewcnt = filePaths.Count();
 
+                #region API 세팅파일 호출
+                string[] filePaths2 = Directory.GetFiles(Application.StartupPath.ToString() + @"\ApiSetting\", "ApiSettingFile.xml",
+                         SearchOption.TopDirectoryOnly);
+                if (filePaths2.Count() > 0)
+                {
+                    xmldoc.Load(filePaths2[0].ToString());
+                    XmlElement root1 = xmldoc.DocumentElement;
+                    XmlNodeList nodes1 = root1.ChildNodes;
+                    // 노드 요소의 값을 읽어 옵니다.
+                    foreach (XmlNode node in nodes1)
+                    {
+                        switch (node.Name)
+                        {
+                            case "api_ip":
+                                Api_ip = node.InnerText;
+                                break;
+                            case "api_port":
+                                Api_port = node.InnerText;
+                                break;
+                        }
+                    }
+                }
+
+
+                #endregion
                 foreach (string filepath in filePaths)
                 {
                     ServerEntity ser = new ServerEntity();
+                    ser.Api_ip = Api_ip;
+                    ser.Api_port = Api_port;
+                    xmldoc = new XmlDocument();
                     xmldoc.Load(filepath);
                     XmlElement root = xmldoc.DocumentElement;
                     // 노드 요소들
@@ -110,10 +147,12 @@ namespace SocketServerLauncher
                         }
                         
                     }
+                    #endregion
                     //uc 생성
-                    UserControl1 mot = new UserControl1(ser);
+                    ucGatheringControl mot = new ucGatheringControl(ser);
                     mot.Name = "mot_" + ser.Name;
 
+                    mot.Disposed += ucDisposed;
                     if (tlpCount < 1)
                     {
                         tlpCount = (int)Math.Floor((decimal)Screen.PrimaryScreen.Bounds.Width / (mot.Width + (publicMargin * 2)));
@@ -165,6 +204,37 @@ namespace SocketServerLauncher
             catch (IOException ex)
             {
                 MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void lblStarttime_DoubleClick(object sender, EventArgs e)
+        {
+          frm.frmApiSetting ApiSetting = new frm.frmApiSetting();
+            ApiSetting.ShowDialog();
+
+        }
+        void ucDisposed(object sender, EventArgs e)
+        {
+            //ucGatheringControl ucGC = (ucGatheringControl)sender;
+            //ucGC.Newser.Stop();
+        }
+
+
+        private void SocketServerLauncher_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                //컨트롤 안에 꺼지지않는거 생기면 추가수정
+                for (int i = 0; i < this.tlpList.Controls.Count; i++)
+                {
+                    ucGatheringControl mot = (ucGatheringControl)this.tlpList.Controls[i];
+                    if (mot.Newser != null && mot.Newser.IsListening)
+                        mot.Newser.Stop();
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
     }

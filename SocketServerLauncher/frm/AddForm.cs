@@ -70,7 +70,7 @@ namespace SocketServerLauncher
                     newserver.Name = txtName.Text;
                     newserver.Ip = txtIP.Text;
                     newserver.Port = txtPort.Text;
-                    newserver.Resource_code = _tbResourceCode.Text;
+                    newserver.Resource_code = _tbResourceCode.Text; // 나머지 옵션은 클릭이벤트에서 일어남
                     //xml 파일 생성
                     CreateXML(newserver);
 
@@ -84,7 +84,7 @@ namespace SocketServerLauncher
                 newserver.Name = txtName.Text;
                 newserver.Ip = txtIP.Text;
                 newserver.Port = txtPort.Text;
-                newserver.Resource_code = _tbResourceCode.Text;
+                newserver.Resource_code = _tbResourceCode.Text; // 나머지 옵션은 클릭이벤트에서 일어남
                 //xml 파일 생성
                 CreateXML(newserver);
 
