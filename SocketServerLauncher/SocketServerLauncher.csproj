@@ -88,7 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="api\checkin.cs" />
-    <Compile Include="api\datain.cs" />
     <Compile Include="api\SensorInterface.cs" />
     <Compile Include="ByteSetting.cs" />
     <Compile Include="CoFAS_Log.cs" />
@@ -122,7 +121,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Formatting.cs" />
-    <Compile Include="Provider\DpsProvider.cs" />
     <Compile Include="RestFulMain.cs" />
     <Compile Include="Entity\ServerEntity.cs" />
     <Compile Include="SyncClient.cs" />
@@ -201,7 +199,9 @@
     <Content Include="dll\Newtonsoft.Json.dll" />
     <Content Include="dll\System.Net.Json.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Provider\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
